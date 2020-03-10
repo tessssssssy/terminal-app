@@ -7,12 +7,10 @@ Gem::Specification.new do |spec|
   spec.email         = ["tessfabry@gmail.com"]
 
   spec.summary       = "An activity log app" # summary of the app
-  #spec.description   = %q{TODO: Write a longer description or delete this line.} # description of the app
+  spec.description = "my gem"
   spec.homepage      = "https://github.com/tessssssssy/terminal-app" # url of the gem (or github repo)
   spec.license       = "MIT"
   spec.required_ruby_version = Gem::Requirement.new(">= 2.3.0")
-
-  # spec.metadata["allowed_push_host"] = "TODO: Set to 'http://mygemserver.com'"
 
   # spec.metadata["homepage_uri"] = spec.homepage
   # spec.metadata["source_code_uri"] = "https://github.com/tessssssssy/terminal-app"
