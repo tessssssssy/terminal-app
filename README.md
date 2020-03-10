@@ -1,40 +1,38 @@
-# Terminal::App
+You are to design, implement and test a terminal application and throughout the process demonstrate that you are able to use a range of developer tools.
 
-Welcome to your new gem! In this directory, you'll find the files you need to be able to package up your Ruby library into a gem. Put your Ruby code in the file `lib/terminal/app`. To experiment with that code, run `bin/console` for an interactive prompt.
+The mandatory requirements/constraints for your application are:
 
-TODO: Delete this and the text above, and describe your gem
+accept user input in the form of a file or text input
+produce printed output or interact with the file system
 
-## Installation
+Activity Log/Workout Calendar app
 
-Add this line to your application's Gemfile:
+records activities
+plan future workouts
 
-```ruby
-gem 'terminal-app'
-```
+type - ride, run, swim, walk, etc
+distance
+duration
+sorted by date/time
 
-And then execute:
+Functions
+1. record past activites
 
-    $ bundle install
+2. Plan future activities 
+- also edit, delete activities
+- check off completed activities
 
-Or install it yourself as:
+3. View activities - list/calendar/totals
+- need a way to display completed vs planned activities differently
 
-    $ gem install terminal-app
+Reads activities from a file
+Writes activities to the file
 
-## Usage
+Gems 
+- terminal-table - display activities as a calendar
+- colorize (display )
 
-TODO: Write usage instructions here
-
-## Development
-
-After checking out the repo, run `bin/setup` to install dependencies. Then, run `rake spec` to run the tests. You can also run `bin/console` for an interactive prompt that will allow you to experiment.
-
-To install this gem onto your local machine, run `bundle exec rake install`. To release a new version, update the version number in `version.rb`, and then run `bundle exec rake release`, which will create a git tag for the version, push git commits and tags, and push the `.gem` file to [rubygems.org](https://rubygems.org).
-
-## Contributing
-
-Bug reports and pull requests are welcome on GitHub at https://github.com/[USERNAME]/terminal-app.
+Extension
+- reads garmin files - converting gpx to csv
 
 
-## License
-
-The gem is available as open source under the terms of the [MIT License](https://opensource.org/licenses/MIT).
