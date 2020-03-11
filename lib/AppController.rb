@@ -1,6 +1,7 @@
 require_relative 'Model.rb'
 require_relative 'Display.rb'
 require 'date'
+require "tty-prompt"
 # require 'csv'
 
 
@@ -18,19 +19,15 @@ class AppController
 
     def self.menu(user) #user name
         while true
-        puts "Choose an option:"
-        puts "1 to log an activity"
-        puts "2 to view activities"
-        puts "3 to get stats"
-        puts "4 to quit"
-        answer = gets.chomp.to_i
-        if answer == 1
+        prompt = TTY::Prompt.new
+        answer = prompt.select("Choose an option: ", %w(add-activity show-activities get-stats quit))
+        if answer == 'add-activity'
             self.add_activity(user)
-        elsif answer == 2
+        elsif answer == 'show-activities'
             Display.show_activities(user)
-        elsif answer == 3      
+        elsif answer == 'get-stats'      
             self.get_stats(user)         
-        elsif answer == 4
+        elsif answer == 'quit'
             #show calendar
             exit
         end

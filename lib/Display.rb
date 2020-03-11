@@ -1,6 +1,7 @@
 require 'terminal-table'
 require_relative 'Model.rb'
-# require 'colorize'
+require 'tty-font'
+require 'colorize'
 
 class Display
     # shows list of completed activities
@@ -9,7 +10,9 @@ class Display
         rows = []
         activities.each do |a|
             row = [a.type, a.distance, a.duration, a.date]
-            if a.date
+            if a.date < Date.today
+                row = row.colorize(:green)
+            end
             rows << row
         end
         table = Terminal::Table.new :title => "Activity Log", :headings => ['Activity', 'Distance', 'Duration', 'Date'], :rows => rows
@@ -17,16 +20,21 @@ class Display
     end
 
     def self.display_totals(distance, duration)
-        puts "Total Distance: #{distance} kms"
-        puts "Total Time: #{duration} mins"
+        font = TTY::Font.new(:straight)
+        rows = [["#{distance}kms", "#{duration} mins"]]
+        table = Terminal::Table.new :title => font.write("Activity Totals").colorize(:cyan), :headings => ['Total Distance', 'Total Time'], :rows => rows
+        puts table
     end
 
     def self.display_records(distance, duration)
-        puts "Longest Distance: #{distance}"
-        puts "Longest Duration: #{duration}"
+        font = TTY::Font.new(:straight)
+        font = TTY::Font.new(:doom)
+        rows = [["#{distance}kms", "#{duration} mins"]]
+        table = Terminal::Table.new :title => font.write("Personal Records").colorize(:magenta), :headings => ['Longest Distance', 'Longest Time'], :rows => rows
+        puts table
+        # puts "Longest Distance: #{distance}"
+        # puts "Longest Duration: #{duration}"
     end
-
 end
-
 
 
