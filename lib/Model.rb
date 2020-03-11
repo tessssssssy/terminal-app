@@ -11,11 +11,22 @@ class Model
         csv = CSV.open("users/#{user}.csv", 'wb') do |csv|
         end
     end
+
+    # need to seed activities when app loads
+    # only to be called at the start
+    # def self.read_file(user)
+    #     saved_activities = self.get_activities(user)
+    #     saved_activities.each do |activity|
+    #         @@activities << activity
+    #     end
+    #     return @@activities
+    # end
     def self.get_activities(user)
         activities = File.open("users/#{user}.csv", "r").read.split("\n")
         activities = activities.map do |activity|
             activity.split(",")
         end
+        @@activities = []
         activities.each do |activity|
             new_activity = Activity.new(activity[0], activity[1], activity[2], activity[3])
             new_activity.completed = activity[4] # true or false
@@ -40,7 +51,7 @@ class Model
           end
         return @@activities
     end
-    
+
     def self.search_activities(user, date)
         matched = []
         @@activities.each do |activity|

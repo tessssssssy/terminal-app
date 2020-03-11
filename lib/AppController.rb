@@ -12,6 +12,7 @@ class AppController
     def self.check_user(user_name)  
         if File.exist?("users/#{user_name}.csv")
             Model.get_activities(user_name) # loads the users activities into an array
+            # Model.read_file(user_name)
             self.menu(user_name)
         else 
             Model.add_user(user_name)
@@ -41,7 +42,7 @@ class AppController
         end
             activities = Model.search_activities(user, date) #an array of activities
             if activities.length == 0
-                puts "No activities scheduled on that date"
+                puts "No activities scheduled on that date" # handle error
             end
             prompt = TTY::Prompt.new
             options = %w()
