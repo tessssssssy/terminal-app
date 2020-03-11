@@ -1,5 +1,7 @@
 require_relative 'Model.rb'
 require_relative 'Display.rb'
+require_relative 'helpers.rb'
+
 require 'date'
 require "tty-prompt"
 # require 'csv'
@@ -34,40 +36,54 @@ class AppController
     end
     end
 
-
     def self.add_activity(user)
-        puts "Activity type: "
-        type = gets.chomp.downcase
+        prompt = TTY::Prompt.new
+        type = prompt.select("Select Activity: ", %w(run bike swim walk/hike))
+    begin
         puts "Distance(kms): "
         distance = gets.chomp.to_f
+        raise "Invalid Input" if distance == 0.0
+    rescue RuntimeError
+        puts "Please enter a number"
+        retry
+    end
+    begin
         puts "Duration(mins): "
         duration = gets.chomp.to_i
+        raise "Invalid Input" if duration == 0
+    rescue RuntimeError
+        puts "Please enter a number"
+        retry
+    end
+    # need to handle wrong user input
+    begin
         puts "Date: (today or yyyy-mm-dd)"     
-        date = gets.chomp      
+        date = gets.chomp
+        Date.parse(date)
+    rescue Date::Error
+        puts "Invalid date"
+        retry
+    end
         if date.downcase == "today"
-            date = Date.today
+            date = Date.today.to_s
         end
         Model.add_activity(user, type, distance, duration, date)
     end
 
     def self.get_stats(user)
-    begin
-        puts "Enter a month (or all): "
-        months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"]
-        month = gets.chomp
-        raise "Invalid date input" if month != "all" && months.downcase.include?(date.downcase) == false
-        rescue RuntimeError
-        puts "Please enter a month"
-        retry
-        end
-        puts "Enter an activity type: "
-        type = gets.chomp
+        prompt = TTY::Prompt.new
+        month = prompt.select("Choose an month: ", %w(All January February March April May June July August September October November December))
+        prompt = TTY::Prompt.new
+        type = prompt.select("Select Activity: ", %w(run bike swim walk/hike))
         totals = Model.calculate_totals(user, type, month)
         records = Model.find_longest(user, type, month)
         Display.display_records(records[0], records[1])
         Display.display_totals(totals[0], totals[1])
     end
 end
+
+
+
 
 
 

@@ -45,23 +45,47 @@
 
 # Date::MONTHNAMES[month_num]
 
-require "tty-prompt"
+# require "tty-prompt"
 
-prompt = TTY::Prompt.new
+# prompt = TTY::Prompt.new
 
-answer = prompt.select("Choose your destiny?", %w(Scorpion Kano Jax))
-puts answer
-# =>
-duration = 320
-minutes = duration % 60
-hours = (duration - minutes) / 60
+# answer = prompt.select("Choose your destiny?", %w(Scorpion Kano Jax))
+# puts answer
+# # =>
+# duration = 320
+# minutes = duration % 60
+# hours = (duration - minutes) / 60
 
-puts "#{hours} hours and #{minutes} minutes"
+# puts "#{hours} hours #{minutes} mins"
 
-# Select drinks? (Use ↑/↓ arrow keys, press Space to select and Enter to finish)"
-# ‣ ⬡ vodka
-#   ⬡ beer
-#   ⬡ wine
-#   ⬡ whisky
-#   ⬡ bourbon
+# # Select drinks? (Use ↑/↓ arrow keys, press Space to select and Enter to finish)"
+# # ‣ ⬡ vodka
+# #   ⬡ beer
+# #   ⬡ wine
+# #   ⬡ whisky
+# #   ⬡ bourbon
 
+str = "fhdnajknfk"
+puts str.to_f
+
+require 'date'
+date = Date.today.to_s
+# date_num = date.split('-').join('').to_i
+# p date
+# p date_num
+
+
+#compares two date strings
+def compare_dates(d1, d2)
+    num_1 = d1.split('-').join('').to_i
+    num_2 = d2.split('-').join('').to_i
+    if num_1 > num_2
+        return num_1
+    else
+        return num_2
+    end
+end
+
+p compare_dates(date, "2020-03-22")
+
+p Date.parse("2020-02-31")
