@@ -1,14 +1,14 @@
 require_relative 'Model.rb'
 require_relative 'Display.rb'
+require 'date'
 # require 'csv'
 
 
 class AppController
-    def self.check_user
-        puts "Enter your name: "
-        user_name = gets.chomp.downcase    
+    def self.check_user(user_name)
+        # puts "Enter your name: "
+        # user_name = gets.chomp.downcase    
         if File.exist?("users/#{user_name}.csv")
-            # user = Model.get_user(user_name) #need to write this method
             self.menu(user_name)
         else 
             Model.add_user(user_name)
@@ -20,9 +20,9 @@ class AppController
         while true
         puts "Choose an option:"
         puts "1 to log an activity"
-        puts "2 to view completed activities"
+        puts "2 to view activities"
         puts "3 to get stats"
-        puts "4 to show calendar"
+        puts "4 to quit"
         answer = gets.chomp.to_i
         if answer == 1
             self.add_activity(user)
@@ -37,6 +37,7 @@ class AppController
     end
     end
 
+
     def self.add_activity(user)
         puts "Activity type: "
         type = gets.chomp.downcase
@@ -44,8 +45,8 @@ class AppController
         distance = gets.chomp.to_f
         puts "Duration(mins): "
         duration = gets.chomp.to_i
-        puts "Date: (today or yyyy-mm-dd)"
-        date = gets.chomp
+        puts "Date: (today or yyyy-mm-dd)"     
+        date = gets.chomp      
         if date.downcase == "today"
             date = Date.today
         end
@@ -53,8 +54,15 @@ class AppController
     end
 
     def self.get_stats(user)
+    begin
         puts "Enter a month (or all): "
+        months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"]
         month = gets.chomp
+        raise "Invalid date input" if month != "all" && months.downcase.include?(date.downcase) == false
+        rescue RuntimeError
+        puts "Please enter a month"
+        retry
+        end
         puts "Enter an activity type: "
         type = gets.chomp
         totals = Model.calculate_totals(user, type, month)
