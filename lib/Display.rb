@@ -2,8 +2,9 @@ require 'terminal-table'
 require_relative 'Model.rb'
 
 class Display
+    # shows list of completed activities
     def self.show_activities(user)
-        activities = Model.get_activities
+        activities = Model.get_activities(user)
         rows = []
         activities.each do |a|
             rows << [a.type, a.distance, a.duration, a.date]
@@ -17,9 +18,12 @@ class Display
         puts "Total Time: #{duration} mins"
     end
 
-    def self.show_calendar
-
-        
+    def self.display_records(distance, duration)
+        puts "Longest Distance: #{distance}"
+        puts "Longest Duration: #{duration}"
     end
+
 end
+
+
 
