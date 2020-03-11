@@ -1,5 +1,6 @@
 require_relative "terminal/app/version"
-require_relative 'ActivityController.rb'
+require_relative 'AppController.rb'
+
 
 module Terminal
   module App
@@ -9,6 +10,5 @@ module Terminal
 end
 
 # Entry point to the app
-
-ActivityController.menu
+AppController.check_user
 
