@@ -1,6 +1,7 @@
 require_relative 'Model.rb'
 require_relative 'Display.rb'
 require_relative 'helpers.rb'
+require_relative 'Activity.rb'
 
 require 'date'
 require "tty-prompt"
@@ -8,10 +9,9 @@ require "tty-prompt"
 
 
 class AppController
-    def self.check_user(user_name)
-        # puts "Enter your name: "
-        # user_name = gets.chomp.downcase    
+    def self.check_user(user_name)  
         if File.exist?("users/#{user_name}.csv")
+            Model.get_activities(user_name) # loads the users activities into an array
             self.menu(user_name)
         else 
             Model.add_user(user_name)
@@ -22,16 +22,46 @@ class AppController
     def self.menu(user) #user name
         while true
         prompt = TTY::Prompt.new
-        answer = prompt.select("Choose an option: ", %w(add-activity show-activities get-stats quit))
+        answer = prompt.select("Choose an option: ", %w(add-activity show-activities check-completed-activity get-stats quit))
         if answer == 'add-activity'
             self.add_activity(user)
         elsif answer == 'show-activities'
             Display.show_activities(user)
+        elsif answer == 'check-completed-activity'
+        begin
+            puts "Activity date: (today or yyyy-mm-dd): "
+            date = gets.chomp
+            if date == "today"
+                date = Date.today.to_s
+            end
+            Date.parse(date)
+        rescue Date::Error
+            puts "Invalid date"
+            retry
+        end
+            activities = Model.search_activities(user, date) #an array of activities
+            if activities.length == 0
+                puts "No activities scheduled on that date"
+            end
+            prompt = TTY::Prompt.new
+            options = %w()
+            activities.each do |activity|
+                options << "#{activity.type}-#{activity.distance}-#{activity.duration}-#{activity.date}"
+            end
+            selected_activity = prompt.select("Select Activity: ", options)
+            activities.each do |activity|
+                activity_string = "#{activity.type}-#{activity.distance}-#{activity.duration}-#{activity.date}"
+                if activity_string == selected_activity
+                    activity.completed = true
+                end
+            end
         elsif answer == 'get-stats'      
             self.get_stats(user)         
         elsif answer == 'quit'
             #show calendar
             exit
+        else 
+            puts "Invalid Input"
         end
     end
     end
@@ -59,17 +89,18 @@ class AppController
     begin
         puts "Date: (today or yyyy-mm-dd)"     
         date = gets.chomp
-        Date.parse(date)
+        if date != "today"
+            Date.parse(date)
+        end
     rescue Date::Error
         puts "Invalid date"
         retry
     end
         if date.downcase == "today"
             date = Date.today.to_s
-        end
+        end        
         Model.add_activity(user, type, distance, duration, date)
     end
-
     def self.get_stats(user)
         prompt = TTY::Prompt.new
         month = prompt.select("Choose an month: ", %w(All January February March April May June July August September October November December))

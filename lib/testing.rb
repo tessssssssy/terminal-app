@@ -74,6 +74,23 @@ date = Date.today.to_s
 # p date
 # p date_num
 
+#takes in string checks if right format
+# def valid_date?(date)
+#     return false if date.class != String
+#     return false if date.length != 10
+#     date_arr = date.split("-")
+#     return false if date.split("-") != 3
+#     return false if date_arr[1].to_i > 12
+#     date_arr.each do |str|
+#         if str.to_i == 0
+#             return false
+#         end
+# end
+#  valid_date ="2020-03-10"
+ #length == 10
+ #.split('-') == 3
+
+# p valid_date?(12424)
 
 #compares two date strings
 def compare_dates(d1, d2)
@@ -86,6 +103,35 @@ def compare_dates(d1, d2)
     end
 end
 
-p compare_dates(date, "2020-03-22")
 
-p Date.parse("2020-02-31")
+
+require "tty-prompt"
+require_relative 'Model.rb'
+
+activities = Model.search_activities('tess', '2020-03-11') #an array of activities
+p activities
+prompt = TTY::Prompt.new
+activity_strings = []
+activities.each do |activity|
+    activity_strings << "#{activity.type}-#{activity.distance}-#{activity.duration}-#{activity.date}"
+end
+
+p activity_strings
+# choices = %w()
+# activities.each do |activity|
+#     choices << "activity" #"#{activity.type}-#{activity.distance}-#{activity.duration}-#{activity.date}"
+# end
+# selected_activity = prompt.select("Select Activity: ", choices)
+prompt.select("Choose your destiny?") do |menu|
+    menu.choice activity_strings[0] , 1
+    menu.choice 'Kano', 2
+    menu.choice 'Jax', -> { 'Nice choice captain!' }
+  end
+# =>
+#
+# Select drinks? (Use ↑/↓ arrow keys, press Space to select and Enter to finish)"
+# ‣ ⬡ vodka
+#   ⬡ beer
+#   ⬡ wine
+#   ⬡ whisky
+#   ⬡ bourbon

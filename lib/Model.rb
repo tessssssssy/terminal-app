@@ -18,10 +18,11 @@ class Model
         end
         activities.each do |activity|
             new_activity = Activity.new(activity[0], activity[1], activity[2], activity[3])
+            new_activity.completed = activity[4] # true or false
             @@activities << new_activity
-            if is_in_past?(new_activity.date)
-                new_activity.complete_activity
-            end
+            # if is_in_past?(new_activity.date)
+            #     new_activity.complete_activity
+            # end
         end
         return @@activities
     end
@@ -31,12 +32,23 @@ class Model
     def self.add_activity(user, type, distance, duration, date)
         activity = Activity.new(type, distance, duration, date)
         if is_in_past?(activity.date)
-            activity.complete_activity # checks activity completed if in the past
+            activity.completed = true # checks activity completed if in the past
         end
         @@activities << activity
         CSV.open("users/#{user}.csv", "a") do |file|
-            file << [activity.type, activity.distance, activity.duration, activity.date]    
-          end 
+            file << [activity.type, activity.distance, activity.duration, activity.date, activity.completed]    
+          end
+        return @@activities
+    end
+    
+    def self.search_activities(user, date)
+        matched = []
+        @@activities.each do |activity|
+            if activity.date == date
+                matched << activity
+            end
+        end
+        return matched  # return array of activities that match date
     end
 
     def self.find_longest(user, type, month)

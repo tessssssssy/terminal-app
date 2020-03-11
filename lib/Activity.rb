@@ -1,7 +1,8 @@
 require 'date'
 
 class Activity
-    attr_reader :type, :distance, :duration, :date, :completed
+    attr_reader :type, :distance, :duration, :date
+    attr_accessor :completed
     def initialize(type, distance, duration, date)
         @type = type
         @distance = distance
