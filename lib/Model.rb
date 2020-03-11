@@ -45,7 +45,8 @@ class Model
         if is_in_past?(activity.date)
             activity.completed = true # checks activity completed if in the past
         end
-        @@activities << activity
+        @@activities << activity # pushes into the activities array
+        #appends to file
         CSV.open("users/#{user}.csv", "a") do |file|
             file << [activity.type, activity.distance, activity.duration, activity.date, activity.completed]    
           end
@@ -68,7 +69,7 @@ class Model
         activities = self.get_activities(user)
         activities.each do |activity|
             month_num = activity.date.to_s.split('-')[1].to_i
-            if month == 'all' || month == Date::MONTHNAMES[month_num]
+            if month == 'All' || month == Date::MONTHNAMES[month_num]
                 if activity.distance.to_f > longest_distance
                     longest_distance = activity.distance.to_f
                 end
@@ -88,7 +89,7 @@ class Model
         activities = self.get_activities(user)        
         activities.each do |activity|
             month_num = activity.date.to_s.split('-')[1].to_i
-            if activity.type == type && ( month == 'all' || month == Date::MONTHNAMES[month_num] )
+            if activity.type == type && ( month == 'All' || month == Date::MONTHNAMES[month_num] )
                 distance += activity.distance.to_f
                 duration += activity.duration.to_i
             end

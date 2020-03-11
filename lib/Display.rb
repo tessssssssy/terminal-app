@@ -1,7 +1,6 @@
 require 'terminal-table'
 require_relative 'Model.rb'
 require_relative 'helpers.rb'
-
 require 'tty-font'
 require 'colorize'
 
@@ -12,9 +11,15 @@ class Display
         rows = []
         activities.each do |a|
             row = [a.type, a.distance, a.duration, a.date]
-            if a.completed == true
+            if a.completed == 'true'
                 row = row.map do |cell|
                     cell.to_s.colorize(:green)
+                end
+            end
+            # if activity is_in_past? and completed == false - colorize red
+            if a.completed == 'false' && is_in_past?(a.date)
+                row = row.map do |cell|
+                    cell.to_s.colorize(:red)
                 end
             end
             rows << row
@@ -35,8 +40,6 @@ class Display
         rows = [["#{distance}kms", "#{duration}"]]
         table = Terminal::Table.new :title => font.write("Personal Records").colorize(:magenta), :headings => ['Longest Distance', 'Longest Time'], :rows => rows
         puts table
-        # puts "Longest Distance: #{distance}"
-        # puts "Longest Duration: #{duration}"
     end
 end
 

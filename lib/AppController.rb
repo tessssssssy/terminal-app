@@ -21,7 +21,7 @@ class AppController
     end
 
     def self.menu(user) #user name
-        while true
+      while true
         prompt = TTY::Prompt.new
         answer = prompt.select("Choose an option: ", %w(add-activity show-activities check-completed-activity get-stats quit))
         if answer == 'add-activity'
@@ -29,6 +29,18 @@ class AppController
         elsif answer == 'show-activities'
             Display.show_activities(user)
         elsif answer == 'check-completed-activity'
+            self.check_completed(user) 
+        elsif answer == 'get-stats'      
+            self.get_stats(user)         
+        elsif answer == 'quit'
+            exit
+        else 
+            puts "Invalid Input"
+        end
+      end
+    end
+
+    def self.check_completed(user)
         begin
             puts "Activity date: (today or yyyy-mm-dd): "
             date = gets.chomp
@@ -36,14 +48,12 @@ class AppController
                 date = Date.today.to_s
             end
             Date.parse(date)
-        rescue Date::Error
+            activities = Model.search_activities(user, date) #an array of activities
+        raise "No activities on that date" if activities.length == 0
+        rescue Date::Error, RuntimeError
             puts "Invalid date"
             retry
-        end
-            activities = Model.search_activities(user, date) #an array of activities
-            if activities.length == 0
-                puts "No activities scheduled on that date" # handle error
-            end
+        end           
             prompt = TTY::Prompt.new
             options = %w()
             activities.each do |activity|
@@ -56,17 +66,7 @@ class AppController
                     activity.completed = true
                 end
             end
-        elsif answer == 'get-stats'      
-            self.get_stats(user)         
-        elsif answer == 'quit'
-            #show calendar
-            exit
-        else 
-            puts "Invalid Input"
-        end
     end
-    end
-
     def self.add_activity(user)
         prompt = TTY::Prompt.new
         type = prompt.select("Select Activity: ", %w(run bike swim walk/hike))
