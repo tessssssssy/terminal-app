@@ -1,5 +1,6 @@
 require 'terminal-table'
 require_relative 'Model.rb'
+# require 'colorize'
 
 class Display
     # shows list of completed activities
@@ -7,7 +8,9 @@ class Display
         activities = Model.get_activities(user)
         rows = []
         activities.each do |a|
-            rows << [a.type, a.distance, a.duration, a.date]
+            row = [a.type, a.distance, a.duration, a.date]
+            if a.date
+            rows << row
         end
         table = Terminal::Table.new :title => "Activity Log", :headings => ['Activity', 'Distance', 'Duration', 'Date'], :rows => rows
         puts table
