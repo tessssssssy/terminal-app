@@ -52,8 +52,11 @@ prompt = TTY::Prompt.new
 answer = prompt.select("Choose your destiny?", %w(Scorpion Kano Jax))
 puts answer
 # =>
+duration = 320
+minutes = duration % 60
+hours = (duration - minutes) / 60
 
-
+puts "#{hours} hours and #{minutes} minutes"
 
 # Select drinks? (Use ↑/↓ arrow keys, press Space to select and Enter to finish)"
 # ‣ ⬡ vodka

@@ -44,12 +44,14 @@ class Model
                 if activity.distance.to_f > longest_distance
                     longest_distance = activity.distance.to_f
                 end
-                if activity.duration.to_f == longest_duration
-                    longest_duration = activity.duration.to_f
+                if activity.duration.to_i > longest_duration
+                    longest_duration = activity.duration.to_i
                 end 
             end
         end
-        return [longest_distance, longest_duration]
+        minutes = longest_duration % 60
+        hours = (longest_duration - minutes) / 60
+        return [longest_distance, "#{hours} hours #{minutes} mins"]
     end
 
     def self.calculate_totals(user, type, month)
@@ -63,12 +65,16 @@ class Model
             month_num = activity.date.to_s.split('-')[1].to_i
             if activity.type == type && ( month == 'all' || month == Date::MONTHNAMES[month_num] )
                 distance += activity.distance.to_f
-                duration += activity.duration.to_f
+                duration += activity.duration.to_i
             end
         end
-        return [distance, duration]
+        minutes = duration % 60
+        hours = (duration - minutes) / 60
+        return [distance, "#{hours} hours #{minutes} mins"]
     end
 end
+
+
 
 
 
