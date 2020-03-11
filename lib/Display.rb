@@ -1,5 +1,7 @@
 require 'terminal-table'
 require_relative 'Model.rb'
+require_relative 'helpers.rb'
+
 require 'tty-font'
 require 'colorize'
 
@@ -10,7 +12,7 @@ class Display
         rows = []
         activities.each do |a|
             row = [a.type, a.distance, a.duration, a.date]
-            if a.date < Date.today
+            if a.completed == true
                 row = row.colorize(:green)
             end
             rows << row
