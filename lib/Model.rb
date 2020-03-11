@@ -1,34 +1,39 @@
 require_relative 'Activity.rb'
-
+require_relative 'helpers.rb'
 require 'date'
 require 'csv'
 
 # require 'csv'
 # require_relative 'activities.csv'
 class Model
+    @@activities = []
     def self.add_user(user)
         csv = CSV.open("users/#{user}.csv", 'wb') do |csv|
         end
     end
-
     def self.get_activities(user)
         activities = File.open("users/#{user}.csv", "r").read.split("\n")
         activities = activities.map do |activity|
             activity.split(",")
         end
-        # activities = CSV.open("activities.csv", "r")
-        # activities
-        activities_arr = []
         activities.each do |activity|
-            activities_arr << Activity.new(activity[0], activity[1], activity[2], activity[3])
+            new_activity = Activity.new(activity[0], activity[1], activity[2], activity[3])
+            @@activities << new_activity
+            if is_in_past?(new_activity.date)
+                new_activity.complete_activity
+            end
         end
-        return activities_arr
+        return @@activities
     end
 
     # add the new activity 
     #append it to the users file
     def self.add_activity(user, type, distance, duration, date)
         activity = Activity.new(type, distance, duration, date)
+        if is_in_past?(activity.date)
+            activity.complete_activity # checks activity completed if in the past
+        end
+        @@activities << activity
         CSV.open("users/#{user}.csv", "a") do |file|
             file << [activity.type, activity.distance, activity.duration, activity.date]    
           end 
@@ -57,9 +62,6 @@ class Model
     def self.calculate_totals(user, type, month)
         distance = 0
         duration = 0
-        # loop over activity array 
-        # if date matches and name matches 
-        # increment time and duration
         activities = self.get_activities(user)        
         activities.each do |activity|
             month_num = activity.date.to_s.split('-')[1].to_i

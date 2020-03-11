@@ -13,7 +13,9 @@ class Display
         activities.each do |a|
             row = [a.type, a.distance, a.duration, a.date]
             if a.completed == true
-                row = row.colorize(:green)
+                row = row.map do |cell|
+                    cell.to_s.colorize(:green)
+                end
             end
             rows << row
         end
