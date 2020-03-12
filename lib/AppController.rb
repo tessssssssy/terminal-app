@@ -4,20 +4,23 @@ require_relative 'helpers.rb'
 require_relative 'Activity.rb'
 require 'date'
 require "tty-prompt"
-# require 'csv'
+
 
 class AppController
+
+    # run at start of program to check if new user
+    # either create a file for new user or get activities for returning user
     def self.check_user(user_name)  
         if File.exist?("users/#{user_name}.csv")
-            Model.get_activities(user_name) # loads the users activities into an array
-            # Model.read_file(user_name)
+            Model.get_activities(user_name) 
             self.menu(user_name)
         else 
             Model.add_user(user_name)
             self.menu(user_name)
         end
     end
-    # main menu
+
+    # main menu - run straight after user check
     def self.menu(user)
       while true
         prompt = TTY::Prompt.new
@@ -122,7 +125,6 @@ class AppController
         activity = self.select_activity(user, activities)
         Model.delete_activity(user, activity)
     end
-
     def self.add_activity(user)
         prompt = TTY::Prompt.new
         type = prompt.select("Select Activity: ", %w(run bike swim walk/hike))
@@ -135,7 +137,7 @@ class AppController
         retry
     end
     begin
-        puts "Duration(hours:mins): "
+        puts "Duration(mins): "
         duration = gets.chomp.to_i
         raise "Invalid Input" if duration == 0
     rescue RuntimeError
