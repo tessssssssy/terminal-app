@@ -65,16 +65,15 @@ class Model
 
     def self.delete_activity(user, activity)
         activities = self.get_activities(user)
-        activities.each do |a|
-            if a.type == activity.type && a.distance == activity.distance && a.duration == activity.distance
-                activities.delete(activity)
-            end
+        activities = activities.select do |a|
+            # if a.type == activity.type && a.distance == activity.distance && a.duration == activity.distance
+            #     activities.delete_at(index)
+            # end
+            a.type != activity.type || a.distance != activity.distance || a.duration != activity.duration
         end
-        CSV.open("users/#{user}.csv", "wb") do |file|
-            activities.each do |activity|
-              file << [activity.type, activity.distance, activity.duration, activity.date, activity.completed] 
-            end   
-          end
+        self.update_activities(user, activities)
+        p activities
+        p activity
     end
 
     def self.find_longest(user, type, month)
