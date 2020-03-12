@@ -150,7 +150,7 @@ Gemfile
 
 ```ruby
 
-gem 'terminal-app', '~> 0.1.0'
+gem 'terminal-app', '~> 0.1.1'
 
 ```
 
