@@ -18,8 +18,7 @@ The app is intended for anyone who is interested in starting an exercise plan an
 
 How the audience will use the application
 ---
-Users will use the application to plan and then track their 
-
+Users will use the application to create their own exercise plan, log and check off completed workouts and to calculate and monitor their monthly activity totals. 
 
 Application Features
 ---
@@ -59,9 +58,9 @@ User Interaction
 
 User Interaction Diagram
 ---
-![User Interaction Diagram](Terminal-app.png)
+![User Interaction Diagram](images/Terminal-app.png)
 
-R9 Implementation Plan
+Implementation Plan
 ---
 Develop an implementation plan which:
 - outlines how each feature will be implemented and a checklist of tasks for each feature
@@ -72,8 +71,69 @@ Utilise a suitable project management platform to track this implementation plan
 
 > Your checklists for each feature should have at least 5 items.
 
+Structure
+---
+The application will be written using a Model, View, Controller (MVC) type structure
 
+-  The model will interact with and manipulate user data taken from user input and stored in 
+a csv file. It will also send data to the display class to display to the user
 
+-  The controller is responsible for taking user input and controlling the flow of the application. It
+sends user input to the model where it is processed and stored on a csv file
+
+-  The display class will take user data from the model and display it in a visually appealing way to the user
+
+- An Activity class will be used to create a blueprint for activity objects
+
+- A csv file will be allocated to each user to store their activities
+
+Features
+---
+1. Main Menu
+- create a menu method in controller class
+- direct user to various sub menus/features
+- use a loop to continue showing user menu options until they quit app
+- install tty prompt gem to create more user friendly menu
+- handle user input errors
+ 
+
+2. Add Activity
+- Create an activity class with type, distance, duration, date parameters
+- Create a method in controller that takes user input
+- Create method in model that processes user input and creates activity object
+- Append new activity to csv file
+
+3. Show Activities
+- need a method to get activities from csv file and add to an array
+- method in display class to display data in a presentable way
+- use terminal-table gem to display the activities as a table
+- sort data to show newest activities first
+
+4. Check off completed activities
+- create a method to search for activities by date
+- method to handle user input 
+- method to take selected activity and set completed
+- change color of completed activity in display class
+- auto set complete if a user logs a past activity
+
+5. Delete Activity
+- method to search for activity to delete
+- handle user input
+- remove activity from activities array
+- method to update the csv file
+- redirect to main menu if no activities to delete
+
+6. Get Stats
+- method to calculate total distance/time
+- Display method to show totals
+- method to find longest activities
+- Display method to show longest activities
+- method to handle user input - sub menu to enter activity 
+type, month
+
+Project Management
+---
+I will be utilizing trello for project management
 
 Documentation
 ---
@@ -105,3 +165,32 @@ Running the application
 ```bash
 ruby terminal-app <username>
 ```
+Instructions 
+
+1. Enter a username as a command line argument
+
+2. If it is a new user, a file will be created to store the users activities, otherwise, the username will be matched to their corresponding csv file with their stored data.
+
+Command Line Interface
+---
+
+Main Menu
+
+![Main Menu](images/main-menu.png)
+
+Show Activities
+
+![Show Activities](images/show.png)
+
+
+Check Completed sub-menu
+
+![Check Completed](images/check-completed.png)
+
+Delete Activity sub-menu
+
+![Delete](images/delete.png)
+
+Get Stats
+
+![Get Stats](images/get-stats.png)
