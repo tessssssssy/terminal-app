@@ -122,12 +122,12 @@ p activity_strings
 #     choices << "activity" #"#{activity.type}-#{activity.distance}-#{activity.duration}-#{activity.date}"
 # end
 # selected_activity = prompt.select("Select Activity: ", choices)
-prompt.select("Choose your destiny?") do |menu|
-    menu.choice activity_strings[0] , 1
-    menu.choice 'Kano', 2
-    menu.choice 'Jax', -> { 'Nice choice captain!' }
-  end
-# =>
+# prompt.select("Choose your destiny?") do |menu|
+#     menu.choice activity_strings[0] , 1
+#     menu.choice 'Kano', 2
+#     menu.choice 'Jax', -> { 'Nice choice captain!' }
+#   end
+# # =>
 #
 # Select drinks? (Use ↑/↓ arrow keys, press Space to select and Enter to finish)"
 # ‣ ⬡ vodka
@@ -135,3 +135,6 @@ prompt.select("Choose your destiny?") do |menu|
 #   ⬡ wine
 #   ⬡ whisky
 #   ⬡ bourbon
+
+puts Date.parse('2020-43-10')
+puts Date.parse(Date.today)

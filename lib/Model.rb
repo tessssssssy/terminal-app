@@ -27,9 +27,17 @@ class Model
             # end
         end
         # sort activities by date
-        @@activities = @@activities.sort_by {|obj| obj.date.to_s.split('-').join('').to_i }
-        return @@activities.reverse
-    end   
+        # @@activities = @@activities.sort_by {|obj| obj.date.to_s.split('-').join('').to_i } #weird errors happening here
+        return @@activities #.reverse
+    end
+    
+    def self.update_activities(user, activities)
+        CSV.open("users/#{user}.csv", "wb") do |file|
+            activities.each do |activity|
+              file << [activity.type, activity.distance, activity.duration, activity.date, activity.completed] 
+            end   
+          end
+    end
     # add the new activity 
     #append it to the users file
     def self.add_activity(user, type, distance, duration, date)
@@ -62,12 +70,11 @@ class Model
                 activities.delete(activity)
             end
         end
-        activities.each do |a|
-            CSV.open("users/#{user}.csv", "w") do |file|
-                file << [a.type, a.distance, a.duration, a.date, a.completed]    
-              end
-        end
-        return activities
+        CSV.open("users/#{user}.csv", "wb") do |file|
+            activities.each do |activity|
+              file << [activity.type, activity.distance, activity.duration, activity.date, activity.completed] 
+            end   
+          end
     end
 
     def self.find_longest(user, type, month)

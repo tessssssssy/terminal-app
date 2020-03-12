@@ -10,20 +10,21 @@ class Display
         activities = Model.get_activities(user)
         rows = []
         activities.each do |a|
-            row = [a.type, a.distance, a.duration, a.date]
+            row = [a.type, a.distance, a.duration, a.date, a.completed]
             if a.completed == 'true'
                 row = row.map do |cell|
                     cell.to_s.colorize(:green)
                 end
             end
             # if activity is_in_past? and completed == false - colorize red
-            if a.completed == 'false' && is_in_past?(a.date)
+            if a.completed == false && is_in_past?(a.date)
                 row = row.map do |cell|
                     cell.to_s.colorize(:red)
                 end
             end
             rows << row
         end
+        p rows
         table = Terminal::Table.new :title => "Activity Log", :headings => ['Activity', 'Distance', 'Duration', 'Date'], :rows => rows
         puts table
     end
@@ -42,6 +43,5 @@ class Display
         puts table
     end
 end
-
 
 

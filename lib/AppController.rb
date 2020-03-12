@@ -6,7 +6,6 @@ require 'date'
 require "tty-prompt"
 # require 'csv'
 
-
 class AppController
     def self.check_user(user_name)  
         if File.exist?("users/#{user_name}.csv")
@@ -48,8 +47,9 @@ class AppController
             date = gets.chomp
             if date == "today"
                 date = Date.today.to_s
+            else
+                Date.parse(date)
             end
-            Date.parse(date)
             activities = Model.search_activities(user, date) #an array of activities
         raise "No activities on that date" if activities.length == 0
         rescue Date::Error, RuntimeError
@@ -67,6 +67,7 @@ class AppController
                 options << "#{activity.type}-#{activity.distance}-#{activity.duration}-#{activity.date}"
             end
             selected_activity = prompt.select("Select Activity: ", options)
+            # p selected_activity
             if selected_activity == 'go-back'
                 self.menu(user)
             end
@@ -112,7 +113,8 @@ class AppController
     def self.check_completed(user)
         activities = self.get_activities_by_date(user)
         activity = self.select_activity(user, activities)
-        activity.completed = true
+        activity.completed = true 
+        Model.update_activities(user, activities)
     end
 
     def self.delete_activity(user)
