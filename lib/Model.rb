@@ -36,9 +36,9 @@ class Model
     
     # iterates over activities array
     # overwrites file with updated activities
-    def self.update_activities(user, activities)
+    def self.update_activities(user)
         CSV.open("users/#{user}.csv", "wb") do |file|
-            activities.each do |activity|
+            @@activities.each do |activity|
               file << [activity.type, activity.distance, activity.duration, activity.date, activity.completed] 
             end   
           end
@@ -75,10 +75,10 @@ class Model
     # updates the csv file to remove the deleted activity
     def self.delete_activity(user, activity) 
         activities = self.get_activities(user)
-        activities = activities.select do |a|
+        @@activities = activities.select do |a|
             a.type != activity.type || a.distance != activity.distance || a.duration != activity.duration
         end
-        self.update_activities(user, activities)      
+        self.update_activities(user)      
     end
 
     # finds the users longest activities by time and distance

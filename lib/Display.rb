@@ -32,6 +32,7 @@ class Display
             rows << row
         end
         table = Terminal::Table.new :title => "Activity Log", :headings => ['Activity', 'Distance', 'Duration', 'Date'], :rows => rows
+        puts table
     end
 
     def self.display_totals(distance, duration)

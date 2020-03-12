@@ -30,7 +30,6 @@ class AppController
         elsif answer == 'show-activities'
             Display.show_activities(user)
         elsif answer == 'check-completed-activity'
-            # self.find_activities(user) 
             self.check_completed(user)
         elsif answer == 'get-stats'      
             self.get_stats(user)    
@@ -44,6 +43,8 @@ class AppController
       end
     end
 
+    # looks up activities based on user input date
+    # returns an array of activities that match date
     def self.get_activities_by_date(user)
         begin
             puts "Activity date: (today or yyyy-mm-dd): "
@@ -51,29 +52,33 @@ class AppController
             if date == "today"
                 date = Date.today.to_s
             else
-                Date.parse(date)
+                # run to test for invalid dates
+                Date.parse(date) 
             end
-            activities = Model.search_activities(user, date) #an array of activities
+            activities = Model.search_activities(user, date)
         raise "No activities on that date" if activities.length == 0
-        rescue Date::Error, RuntimeError
+        rescue Date::Error, RuntimeError 
             puts "Invalid date"
             self.menu(user)
         end 
         return activities   
     end
 
+    # takes array of activities and generates a drop down menu
+    # used for selecting activities to check completed or to delete
+    # returns users chosen activity
     def self.select_activity(user, activities)
-        #activities = self.get_activities_by_date(user)
         prompt = TTY::Prompt.new
             options = %w(go-back)
             activities.each do |activity|
                 options << "#{activity.type}-#{activity.distance}-#{activity.duration}-#{activity.date}"
             end
             selected_activity = prompt.select("Select Activity: ", options)
-            # p selected_activity
             if selected_activity == 'go-back'
                 self.menu(user)
             end
+            
+            # iterates over array of activities, converts to string for comparison with user selection
             activities.each do |activity|
                 activity_string = "#{activity.type}-#{activity.distance}-#{activity.duration}-#{activity.date}"
                 if activity_string == selected_activity
@@ -82,42 +87,11 @@ class AppController
             end
     end
     
-    def self.find_activities(user)
-        begin
-            puts "Activity date: (today or yyyy-mm-dd): "
-            date = gets.chomp
-            if date == "today"
-                date = Date.today.to_s
-            end
-            Date.parse(date)
-            activities = Model.search_activities(user, date) #an array of activities
-        raise "No activities on that date" if activities.length == 0
-        rescue Date::Error, RuntimeError
-            puts "Invalid date"
-            retry
-        end           
-            prompt = TTY::Prompt.new
-            options = %w(go-back)
-            activities.each do |activity|
-                options << "#{activity.type}-#{activity.distance}-#{activity.duration}-#{activity.date}"
-            end
-            selected_activity = prompt.select("Select Activity: ", options)
-            if selected_activity == 'go-back'
-                self.menu(user)
-            end
-            activities.each do |activity|
-                activity_string = "#{activity.type}-#{activity.distance}-#{activity.duration}-#{activity.date}"
-                if activity_string == selected_activity
-                    activity.completed = true
-                end
-            end
-    end
-
     def self.check_completed(user)
         activities = self.get_activities_by_date(user)
         activity = self.select_activity(user, activities)
         activity.completed = true 
-        Model.update_activities(user, activities)
+        Model.update_activities(user)
     end
 
     def self.delete_activity(user)
@@ -125,6 +99,7 @@ class AppController
         activity = self.select_activity(user, activities)
         Model.delete_activity(user, activity)
     end
+
     def self.add_activity(user)
         prompt = TTY::Prompt.new
         type = prompt.select("Select Activity: ", %w(run bike swim walk/hike))
@@ -144,7 +119,6 @@ class AppController
         puts "Please enter a number"
         retry
     end
-    # need to handle wrong user input
     begin
         puts "Date: (today or yyyy-mm-dd)"     
         date = gets.chomp
@@ -152,7 +126,7 @@ class AppController
             Date.parse(date)
         end
     rescue Date::Error
-        puts "Invalid date"
+        puts "No Activities Found"
         retry
     end
         if date.downcase == "today"
@@ -172,7 +146,4 @@ class AppController
         Display.display_totals(totals[0], totals[1])
     end
 end
-
-
-
 
