@@ -12,15 +12,6 @@ class Model
         end
     end
 
-    # need to seed activities when app loads
-    # only to be called at the start
-    # def self.read_file(user)
-    #     saved_activities = self.get_activities(user)
-    #     saved_activities.each do |activity|
-    #         @@activities << activity
-    #     end
-    #     return @@activities
-    # end
     def self.get_activities(user)
         activities = File.open("users/#{user}.csv", "r").read.split("\n")
         activities = activities.map do |activity|
@@ -35,9 +26,11 @@ class Model
             #     new_activity.complete_activity
             # end
         end
-        return @@activities
+        # sort activities by date
+        @@activities = @@activities.sort_by {|obj| obj.date.split('-').join('').to_i }
+        return @@activities.reverse
     end
-
+    
     # add the new activity 
     #append it to the users file
     def self.add_activity(user, type, distance, duration, date)
@@ -61,6 +54,21 @@ class Model
             end
         end
         return matched  # return array of activities that match date
+    end
+
+    def self.delete_activity(user, activity)
+        activities = self.get_activities(user)
+        activities.each do |a|
+            if a.type == activity.type && a.distance == activity.distance && a.duration == activity.distance
+                activities.delete(activity)
+            end
+        end
+        activities.each do |a|
+            CSV.open("users/#{user}.csv", "w") do |file|
+                file << [a.type, a.distance, a.duration, a.date, a.completed]    
+              end
+        end
+        return activities
     end
 
     def self.find_longest(user, type, month)
@@ -99,6 +107,8 @@ class Model
         return [distance, "#{hours} hours #{minutes} mins"]
     end
 end
+
+
 
 
 

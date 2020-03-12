@@ -63,6 +63,15 @@ User Interaction Diagram
 
 R9 Implementation Plan
 ---
+Develop an implementation plan which:
+- outlines how each feature will be implemented and a checklist of tasks for each feature
+- prioritise the implementation of different features, or checklist items within a feature
+- provide a deadline, duration or other time indicator for each feature or checklist/checklist-item
+
+Utilise a suitable project management platform to track this implementation plan
+
+> Your checklists for each feature should have at least 5 items.
+
 
 
 
