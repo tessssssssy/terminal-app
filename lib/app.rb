@@ -17,6 +17,5 @@ user_name = ARGV[0]
 ARGV.clear
 # Entry point to the app
 AppController.check_user(user_name)
-
 # AppController.check_user
 

@@ -54,7 +54,7 @@ class AppController
         raise "No activities on that date" if activities.length == 0
         rescue Date::Error, RuntimeError
             puts "Invalid date"
-            retry
+            self.menu(user)
         end 
         return activities   
     end
@@ -168,13 +168,6 @@ class AppController
         Display.display_totals(totals[0], totals[1])
     end
 end
-
-
-
-
-
-
-
 
 
 

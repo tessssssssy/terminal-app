@@ -27,10 +27,9 @@ class Model
             # end
         end
         # sort activities by date
-        @@activities = @@activities.sort_by {|obj| obj.date.split('-').join('').to_i }
+        @@activities = @@activities.sort_by {|obj| obj.date.to_s.split('-').join('').to_i }
         return @@activities.reverse
-    end
-    
+    end   
     # add the new activity 
     #append it to the users file
     def self.add_activity(user, type, distance, duration, date)
