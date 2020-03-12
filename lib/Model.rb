@@ -56,7 +56,7 @@ class Model
     def self.search_activities(user, date)
         matched = []
         @@activities.each do |activity|
-            if activity.date == date
+            if activity.date == date && activity.completed == 'false'
                 matched << activity
             end
         end
@@ -99,6 +99,8 @@ class Model
         return [distance, "#{hours} hours #{minutes} mins"]
     end
 end
+
+
 
 
 

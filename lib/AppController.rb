@@ -19,8 +19,8 @@ class AppController
             self.menu(user_name)
         end
     end
-
-    def self.menu(user) #user name
+    # main menu
+    def self.menu(user)
       while true
         prompt = TTY::Prompt.new
         answer = prompt.select("Choose an option: ", %w(add-activity show-activities check-completed-activity get-stats quit))
@@ -55,11 +55,14 @@ class AppController
             retry
         end           
             prompt = TTY::Prompt.new
-            options = %w()
+            options = %w(go-back)
             activities.each do |activity|
                 options << "#{activity.type}-#{activity.distance}-#{activity.duration}-#{activity.date}"
             end
             selected_activity = prompt.select("Select Activity: ", options)
+            if selected_activity == 'go-back'
+                self.menu(user)
+            end
             activities.each do |activity|
                 activity_string = "#{activity.type}-#{activity.distance}-#{activity.duration}-#{activity.date}"
                 if activity_string == selected_activity
