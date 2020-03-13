@@ -135,8 +135,15 @@ Project Management
 ---
 I will be utilizing trello for project management
 
-Documentation
+![trello](images/trello.png)
+
+
+Testing
 ---
+
+Manual Testing documentation
+
+https://docs.google.com/spreadsheets/d/1gCTDmCn7aAHaRTZWpWSsw2kVUnW_tdpHwY4TgpYB4J0/edit?usp=sharing
 
 Installation
 

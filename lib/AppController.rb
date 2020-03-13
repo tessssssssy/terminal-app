@@ -7,7 +7,6 @@ require "tty-prompt"
 
 
 class AppController
-
     # run at start of program to check if new user
     # either create a file for new user or get activities for returning user
     def self.check_user(user_name)  
@@ -56,7 +55,7 @@ class AppController
                 Date.parse(date) 
             end
             activities = Model.search_activities(user, date)
-        raise "No activities on that date" if activities.length == 0
+        raise "No activities on that date" if activities.length == 0 || is_in_future?(date)
         rescue Date::Error, RuntimeError 
             puts "Invalid date"
             self.menu(user)
@@ -126,7 +125,7 @@ class AppController
             Date.parse(date)
         end
     rescue Date::Error
-        puts "No Activities Found"
+        puts "Invalid date"
         retry
     end
         if date.downcase == "today"

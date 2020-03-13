@@ -24,7 +24,7 @@ class Display
             end
             
             # if the activity is incomplete, it will turn red if the date has passed
-            if a.completed == false && is_in_past?(a.date)
+            if a.completed == 'false' && is_in_past?(a.date)
                 row = row.map do |cell|
                     cell.to_s.colorize(:red)
                 end
